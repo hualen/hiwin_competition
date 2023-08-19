@@ -15,6 +15,8 @@ from hiwin_interfaces.srv import RobotCommand
 from Ax12 import Ax12
 import ax12move as mm
 
+DEBUG_MODE = False
+
 
 '''
     read axis
@@ -103,9 +105,9 @@ out_bag =   [
                 [-76.189, 287.141, 391.56, 158.362, 18.952, 91.516],
                 [-76.189, 223.204, 391.56, 158.362, 18.952, 91.516],
                 [-76.189, 223.204, 350.56, 158.362, 18.952, 91.516],
-                [-76.189, 227.566, 350.035, 158.362, 18.952, 91.516],
-                [-78.039, 237.591, 308.122, 157.566, -11.885, 91.465],
-                [  0.464, 237.591, 308.122, 157.566, -11.885, 91.465]
+                [-76.189, 233.566, 350.035, 158.362, 18.952, 91.516],
+                [-78.039, 237.591, 288.122, 157.566, -11.885, 91.465],
+                [  0.464, 237.591, 288.122, 157.566, -11.885, 91.465]
             ]
 standby_pass = [40.792, 153.685, 252.876, 158.365, 18.949, 1.696]
 standby = [232.82, 260.402, 428.323, 158.364, 18.948, -8.696]
@@ -280,6 +282,8 @@ class ExampleStrategy(Node):
             return
     
     def BStop(self):
+        if not DEBUG_MODE:
+            return
         self.get_logger().info('WAIT_START')
         while True:
             req = self.generate_robot_request(
@@ -400,10 +404,15 @@ class ExampleStrategy(Node):
                 res = self.move_LIN(out_bag[7],False) # 
                 res = self.move_PTP(out_bag[8],False) 
                 res = self.move_PTP(out_bag[9],False)
-                res = self.move_PTP(out_bag[10],False)
-                res = self.move_PTP(out_bag[11],False)
-                res = self.move_PTP(out_bag[12],False)
-                res = self.move_PTP(out_bag[13],False)
+                
+                res = self.move_PTP(out_bag[10],True)
+                
+                res = self.move_PTP(out_bag[11],True)
+                
+                res = self.move_PTP(out_bag[12],True)
+                
+                res = self.move_PTP(out_bag[13],True)
+                
                  
                 # 愛的魔力轉圈圈=====================
                 res = self.move_PTP(finish[0],False) # 
