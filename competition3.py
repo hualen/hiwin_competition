@@ -15,8 +15,8 @@ from hiwin_interfaces.srv import RobotCommand
 from Ax12 import Ax12
 import ax12move as mm
 
-
-
+# DEBUG_MODE = False
+DEBUG_MODE = True
 
 '''
     read axis
@@ -45,20 +45,11 @@ forder = order.final_order
 print(forder)
 
 
-# DEFAULT_VELOCITY = 100
-# DEFAULT_ACCELERATION = 100
+DEFAULT_VELOCITY = 20
+DEFAULT_ACCELERATION = 20
 # DEFAULT_VELOCITY = 50
 # DEFAULT_ACCELERATION = 50
-DEFAULT_VELOCITY = 80
-DEFAULT_ACCELERATION = 80
-
-SLOW_VELOCITY = 30
-SLOW_ACCELERATION = 30
-
 WORK_BASE = 30
-
-
-DEBUG_MODE = False
 
 BAG_TOOL = 10
 DRAWER_TOOL = 15
@@ -81,13 +72,13 @@ open_bag =  [
                 [511.463, 198.464, 111.683, 158.365, 18.949, -8.696], # 壓袋子
                 [511.463, 268.12, 111.683, 158.365, 18.949, -8.696],  # 壓袋子位置前推
                 [511.463, 268.12, 211.95, 158.365, 18.949, -8.696],   # 往上一點
-                [506.462, 216.605, 249.391, 158.365, 18.949, -8.696], # 碰到繩子洞口  
-                [322.169, 250.605, 304.391, 158.365, 18.949, -8.696], # 抬高中繼點
-                [94.269, 287.991, 420.882, 158.366, 18.95, -8.696],  # 到原子筆口前 [94.269, 285.991, 410.882, 158.366, 18.95, -8.696]
-                [-10.792, 287.991, 420.883, 158.365, 18.949, -8.696],  # 進原子筆
-                [-10.792, 287.991, 380.309, 158.365, 18.949, -8.696],  # 下降一點
-                [-10.792, 257.941, 380.309, 158.365, 18.949, 1.696],   # y減躲避開鉤子
-                [-10.792, 257.941, 252.876, 158.365, 18.949, 1.696],   # 下降離開袋子
+                [506.462, 216.605, 244.391, 158.365, 18.949, -8.696], # 碰到繩子洞口  4hold
+                [302.169, 250.605, 254.391, 158.365, 18.949, -8.696], # 抬高至中繼點
+                [94.269, 285.991, 430.882, 158.366, 18.95, -8.696],  # 到原子筆口前 
+                [0.792, 285.991, 430.883, 158.365, 18.949, -8.696],  # 進原子筆 
+                [0.792, 285.991, 390.309, 158.365, 18.949, -8.696],  # 下降一點
+                [0.792, 257.941, 390.309, 158.365, 18.949, 1.696],   # y減躲避開鉤子
+                [0.792, 257.941, 252.876, 158.365, 18.949, 1.696],   # 下降離開袋子
             ]   
 
 # 收袋點位
@@ -101,52 +92,47 @@ out_bag =   [
                 # [-69.019, 270.897, 453.266, -169.409, 20.632, 2.475], # 進入原子筆
                 # [-79.019, 270.897, 401.141, -169.409, 20.632, 2.475], # 下降一點
                 # [-79.019, 240.379, 401.141, -169.409, 20.632, 78.758],# y減躲避開鉤子
-                # [47.042, 275.482, 254.341, 153.697, 9.848, 68.690], # 旋轉下降離開袋子-169.409, 20.632, 78.758
+                # [47.042, 275.482, 254.341, 153.697, 9.848, 68.690], # 旋轉下降離開袋子
                 [428.203, 215.629, 351.779, 158.361, 18.943, -8.706], # 至勾袋位置高點
                 [428.203, 215.629, 279.904, 158.361, 18.943, -8.706], # 至勾袋位置低點
                 [428.203, 282.391, 279.904, 158.361, 18.943, -8.706], # 前推至勾袋位置
-                [428.203, 282.391, 322.621, 158.361, 18.943, -8.706], # 上台使鉤子碰到
-                [446.905, 291.338, 396.694, 158.363, 18.948, -8.696], # 靠近螺絲口使繩子脫離
-                [170.016, 231.337, 454.456, 158.362, 18.948, 91.509], # 旋轉更改治具角度
-                [117.272, 287.338, 454.439, 158.362, 18.95, 91.51],   # 移動到原子筆口
-                [-96.189, 287.141, 454.435, 158.362, 18.952, 91.516], # 進入原子筆
-                [-96.189, 287.141, 391.56, 158.362, 18.952, 91.516],  # 往下一點
-                [-96.189, 223.204, 391.56, 158.362, 18.952, 91.516],  # y減躲避開鉤子
-                [ 50.626, 232.553, 259.847, 102.523, 16.423, 79.234],
-                [ 70.626, 232.553, 259.847, 102.523, 16.423, 79.234],
-                # [-76.189, 223.204, 350.56, 158.362, 18.952, 91.516],  # 下降
-                # [-78.039, 257.591, 283.122, 157.566, -11.885, 91.465],# 旋轉更改治具角度
-                # [-78.039, 257.591, 283.122, 157.566, -11.885, 91.465],# 旋轉更改治具角度
-                # [  0.464, 257.591, 283.122, 157.566, -11.885, 91.465] # 離開袋子
+                [428.203, 282.391, 332.621, 158.361, 18.943, -8.706], # 上抬使鉤子碰到
+                [446.905, 291.338, 405.194, 158.363, 18.948, -8.696], # 靠近螺絲口使繩子脫離
                 
+                [170.016, 231.337, 454.456, 158.362, 18.948, 91.509], # 旋轉更改治具角度
+                [117.272, 287.338, 464.439, 158.362, 18.95, 91.51],   # 移動到原子筆口
+                [-76.189, 287.141, 464.435, 158.362, 18.952, 91.516], # 進入原子筆
+                [-76.189, 287.141, 401.56, 158.362, 18.952, 91.516],  # 往下一點
+                [-76.189, 223.204, 401.56, 158.362, 18.952, 91.516],  # y減躲避開鉤子
+                [-76.189, 223.204, 350.56, 158.362, 18.952, 91.516],  # 莫名其妙的下降
+                [-78.039, 247.591, 288.122, 157.566, -11.885, 91.465],# 旋轉更改治具角度
+                [-78.039, 257.591, 288.122, 157.566, -11.885, 91.465],# 旋轉更改治具角度
+                [  0.464, 257.591, 288.122, 157.566, -11.885, 91.465] #
             ]
 standby_pass = [40.792, 153.685, 252.876, 158.365, 18.949, 1.696]
 standby = [232.82, 260.402, 428.323, 158.364, 18.948, -8.696]
 
-tea =   [
-            [241.607+tea_cali[0], 365.833+tea_cali[1], 422.635, 158.364, 18.948, -8.696],
+tea =   [      #x                    y                    z
+            [241.607+tea_cali[0], 365.833+tea_cali[1], 437.635            , 158.364, 18.948, -8.696],
             [241.607+tea_cali[0], 365.833+tea_cali[1], 394.623+tea_cali[2], 158.364, 18.948, -8.696],
             [241.607+tea_cali[0], 196.554+tea_cali[1], 392.623+tea_cali[2], 158.364, 18.948, -8.696],
-            [241.607+tea_cali[0], 381.157+tea_cali[1], 394.623+tea_cali[2], 158.364, 18.948, -8.696],
+            [241.607+tea_cali[0], 379.157+tea_cali[1], 394.623+tea_cali[2], 158.364, 18.948, -8.696],
             [241.607+tea_cali[0], 364.833+tea_cali[1], 394.623+tea_cali[2], 158.364, 18.948, -8.696],
-            [241.607+tea_cali[0], 364.833+tea_cali[1], 422.635, 158.364, 18.948, -8.696]
+            [241.607+tea_cali[0], 364.833+tea_cali[1], 437.635            , 158.364, 18.948, -8.696]
         ]
-tea_and_puf = [301.504, 345.833, 429.29, 158.369, 18.949, -8.714]
-
-puf =   [#關到底
-            [362.118+puf_cali[0], 366.628+puf_cali[1], 429.750, 158.368, 18.949, -8.713],
-            [362.118+puf_cali[0], 366.628+puf_cali[1], 392.067+puf_cali[2], 158.368, 18.949, -8.713],
-            [362.119+puf_cali[0], 187.153+puf_cali[1], 392.067+puf_cali[2], 158.369, 18.949, -8.714],
-            [362.119+puf_cali[0], 368.628+puf_cali[1], 392.067+puf_cali[2], 158.369, 18.949, -8.714],
-            [362.119+puf_cali[0], 368.628+puf_cali[1], 429.750, 158.369, 18.949, -8.714]
+puf =   [#關到底 x                    y                    z
+            [362.118+puf_cali[0], 366.628+puf_cali[1], 444.750            , 158.368, 18.949, -8.713],
+            [362.118+puf_cali[0], 366.628+puf_cali[1], 395.067+puf_cali[2], 158.368, 18.949, -8.713],
+            [362.119+puf_cali[0], 187.153+puf_cali[1], 395.067+puf_cali[2], 158.369, 18.949, -8.714],
+            [362.119+puf_cali[0], 368.628+puf_cali[1], 395.067+puf_cali[2], 158.369, 18.949, -8.714],
+            [362.119+puf_cali[0], 368.628+puf_cali[1], 444.750            , 158.369, 18.949, -8.714]
         ]
-tea_and_egg = [195.504, 345.833, 429.29, 158.36, 18.949, -8.691]
-egg =   [
-            [150.546+egg_cali[0], 366.045+egg_cali[1], 421.444, 158.36, 18.949, -8.691],
+egg =   [      #x                    y                    z
+            [150.546+egg_cali[0], 366.045+egg_cali[1], 436.444, 158.36, 18.949, -8.691],
             [150.546+egg_cali[0], 366.045+egg_cali[1], 392.934+egg_cali[2], 158.36, 18.949, -8.691],
-            [150.700+egg_cali[0], 289.027+egg_cali[1], 392.297+egg_cali[2], 158.363, 18.947, -8.725],
+            [150.700+egg_cali[0], 290.027+egg_cali[1], 392.297+egg_cali[2], 158.363, 18.947, -8.725],
             [150.546+egg_cali[0], 367.045+egg_cali[1], 392.934+egg_cali[2], 158.36, 18.949, -8.691],
-            [150.546+egg_cali[0], 367.045+egg_cali[1], 421.444, 158.36, 18.949, -8.691],
+            [150.546+egg_cali[0], 367.045+egg_cali[1], 436.444, 158.36, 18.949, -8.691],
         ]
 finish  =   [
                 [45.504, 197.057, 390.29, -173.967, 25.277, 46.986],
@@ -155,7 +141,6 @@ finish  =   [
                 [-219.982, 131.532, 350.178, -173.967, 25.277, 46.986],
                 [-15.62, 135.419, 350.178, -173.967, 25.277, 46.986], #x方向推
                 [-15.62, 224.577, 350.178, -173.967, 25.277, 46.986], #y方向推
-                # [-15.62, 204.74, 350.178, -173.967, 25.277, 46.986],
             ]
 
 NUM_OBJECTS = 0
@@ -199,7 +184,7 @@ class ExampleStrategy(Node):
         res = self.call_hiwin(req)
         return res
 
-    def slow_move_PTP(self,dis,hold = True,base = WORK_BASE,tool = BAG_TOOL):
+    def slow_move_PTP(self,dis,hold = True,base = WORK_BASE,tool = 1):
         pose = Twist()
         [pose.linear.x, pose.linear.y, pose.linear.z] = dis[0:3]
         [pose.angular.x, pose.angular.y, pose.angular.z] = dis[3:6]
@@ -209,8 +194,8 @@ class ExampleStrategy(Node):
             tool=tool,
             base=base,
             pose=pose,
-            velocity = SLOW_VELOCITY,
-            acceleration = SLOW_ACCELERATION 
+            velocity = 50,
+            acceleration = 50
         )
         res = self.call_hiwin(req)
         return res
@@ -223,8 +208,8 @@ class ExampleStrategy(Node):
         req = self.generate_robot_request(
             cmd_mode=RobotCommand.Request.LINE,
             digital_output_cmd=RobotCommand.Request.DIGITAL_OFF,
-            velocity=100,
-            acceleration=100,
+            velocity=255,
+            acceleration=255,
             tool = tool,
             base = base,
             holding=hold,
@@ -346,11 +331,11 @@ class ExampleStrategy(Node):
                 self.BStop()
                 res = self.move_PTP(open_bag[1],DEBUG_MODE)  # 
                 self.BStop()
-                res = self.slow_move_PTP(open_bag[2],DEBUG_MODE)  # 
+                res = self.move_PTP(open_bag[2],DEBUG_MODE)  # 
                 self.BStop()
-                res = self.slow_move_PTP(open_bag[3],DEBUG_MODE)  # 
+                res = self.move_PTP(open_bag[3],DEBUG_MODE)  # 
                 self.BStop()
-                res = self.move_PTP(open_bag[4],DEBUG_MODE)   #  
+                res = self.move_PTP(open_bag[4],True)   #  
                 self.BStop()
                 res = self.move_PTP(open_bag[5],DEBUG_MODE)  # 
                 self.BStop()
@@ -358,20 +343,18 @@ class ExampleStrategy(Node):
                 self.BStop()
                 res = self.move_PTP(open_bag[7],True)   # 
                 self.BStop()
-                res = self.move_PTP(open_bag[8],True)  #
+                res = self.move_PTP(open_bag[8],DEBUG_MODE)  #
                 self.BStop()
                 res = self.move_PTP(open_bag[9],DEBUG_MODE)  #
                 self.BStop()
                 res = self.move_PTP(open_bag[10],DEBUG_MODE) #
                 self.BStop()
-            
                 # 取物品=====================
-                
-                
-                res = self.move_PTP(standby_pass,DEBUG_MODE)
-                res = self.move_PTP(standby,DEBUG_MODE)
                 print("start order",i+1)
                 # take tea
+                res = self.move_PTP(standby_pass,DEBUG_MODE)
+                res = self.move_PTP(standby,DEBUG_MODE)
+        
                 if forder[i][0] != 0:
                     res = self.move_PTP(tea[0])
                     res = self.move_LIN(tea[1],DEBUG_MODE)
@@ -383,10 +366,9 @@ class ExampleStrategy(Node):
                     res = self.move_LIN(tea[4],DEBUG_MODE)
                     res = self.move_LIN(tea[5],DEBUG_MODE)
                     tea_used = tea_used + forder[i][0]    
-                # res = self.move_PTP(standby,DEBUG_MODE)
+                
+                
                 if forder[i][1] != 0:
-                    if forder[i][0] != 0:
-                        res = self.move_PTP(tea_and_puf,DEBUG_MODE)
                     res = self.move_PTP(puf[0])
                     res = self.move_LIN(puf[1],DEBUG_MODE)
                     for puf_num in range (0,forder[i][1]):
@@ -396,16 +378,11 @@ class ExampleStrategy(Node):
                     res = self.move_LIN(puf[4],DEBUG_MODE)
                     
                     puf_used = puf_used + forder[i][0]
-                # res = self.move_PTP(standby,DEBUG_MODE)
+                
+                
                 if forder[i][2] != 0:
-                    if forder[i][1] != 0:
-                        print("to tea and puf")
-                        res = self.move_PTP(tea_and_puf,DEBUG_MODE)
-                    if forder[i][0] != 0:
-                        print("to tea and egg")
-                        res = self.move_PTP(tea_and_egg,DEBUG_MODE)     
                     res = self.move_PTP(egg[0])
-                    res = self.move_LIN(egg[1],True)
+                    res = self.move_LIN(egg[1],DEBUG_MODE)
                     for egg_num in range (0,forder[i][2]):
                         print("take egg",egg_num+1)
                         res = self.move_LIN(egg[1],DEBUG_MODE)
@@ -413,6 +390,8 @@ class ExampleStrategy(Node):
                         res = self.move_LIN(egg[3],DEBUG_MODE) 
                     res = self.move_LIN(egg[4],DEBUG_MODE)
                     egg_used = egg_used + forder[i][0]
+
+
                 res = self.move_PTP(standby,DEBUG_MODE)
 
                 # 收袋=====================
@@ -436,11 +415,14 @@ class ExampleStrategy(Node):
                 self.BStop()
                 res = self.move_PTP(out_bag[9],DEBUG_MODE) # y減躲避開鉤子
                 self.BStop()
-                res = self.move_PTP(out_bag[10],DEBUG_MODE)      # 下降
+                res = self.move_PTP(out_bag[10],True)      # 下降
                 self.BStop()
-                res = self.move_PTP(out_bag[11],DEBUG_MODE)      # 下降
+                res = self.move_PTP(out_bag[11],True)      # 旋轉更改治具角度
                 self.BStop()
-                 
+                res = self.move_PTP(out_bag[12],True)      # y+
+                self.BStop()
+                res = self.move_PTP(out_bag[13],True)      # 離開袋子
+                self.BStop()
                 # 出貨=====================
                 res = self.move_PTP(finish[0],DEBUG_MODE) # 
                 res = self.move_PTP(finish[1],DEBUG_MODE) #
@@ -448,7 +430,7 @@ class ExampleStrategy(Node):
                 res = self.move_PTP(finish[3],DEBUG_MODE) # 
                 res = self.move_PTP(finish[4],DEBUG_MODE) # 
                 res = self.move_PTP(finish[5],DEBUG_MODE) #
-                # res = self.move_PTP(finish[6],True) #
+                
             
             res = self.move_Angle(PHOTO_POSE)
             if res.arm_state == RobotCommand.Response.IDLE:

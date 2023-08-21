@@ -36,6 +36,7 @@ python3 src/competition/competition2.py
 
 取料測試與調整
 python3 src/competition/competition_test.py
+python3 src/competition/test_old_version.py
 
 回家程式
 python3 src/competition/home.py

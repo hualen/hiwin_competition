@@ -35,8 +35,8 @@ from hiwin_interfaces.srv import RobotCommand
 #     end motor setting
 # """
 
-DEFAULT_VELOCITY = 100
-DEFAULT_ACCELERATION = 100
+DEFAULT_VELOCITY = 50
+DEFAULT_ACCELERATION = 50
 
 VACUUM_PIN = 1
 

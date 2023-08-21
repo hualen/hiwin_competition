@@ -14,62 +14,29 @@ import copy
 
 from hiwin_interfaces.srv import RobotCommand
 # from YoloDetector import YoloDetectorActionClient
-DEFAULT_VELOCITY = 10
-DEFAULT_ACCELERATION = 10
-
-'''
-    read axis
-'''
-tea_axis, puf_axis , egg_axis = [] , [] ,[]
-axis = []
-with open('src/competition/axis_calibration.txt') as A:
-    for eachline in A:
-        tmp = eachline.split()
-        # print(tmp)
-        axis.append(tmp)
-     
-tea_cali = list(map(float,axis[0]))
-puf_cali = list(map(float,axis[1])) 
-egg_cali = list(map(float,axis[2])) 
-
-print(tea_cali)
-print(puf_cali)
-print(egg_cali)
 
 tea =   [
-            [241.607+tea_cali[0], 365.833+tea_cali[1], 422.635, 158.364, 18.948, -8.696],
-            [241.607+tea_cali[0], 365.833+tea_cali[1], 394.623+tea_cali[2], 158.364, 18.948, -8.696],
-            [241.607+tea_cali[0], 196.554+tea_cali[1], 392.623+tea_cali[2], 158.364, 18.948, -8.696],
-            [241.607+tea_cali[0], 379.157+tea_cali[1], 394.623+tea_cali[2], 158.364, 18.948, -8.696],
-            [241.607+tea_cali[0], 364.833+tea_cali[1], 394.623+tea_cali[2], 158.364, 18.948, -8.696],
-            [241.607+tea_cali[0], 364.833+tea_cali[1], 422.635, 158.364, 18.948, -8.696]
+            [241.607, 365.833, 422.635, 158.364, 18.948, -8.696],
+            [241.607, 365.833, 394.623, 158.364, 18.948, -8.696],
+            [241.607, 196.554, 392.623, 158.364, 18.948, -8.696],
+            [241.607, 379.157, 394.623, 158.364, 18.948, -8.696],
+            [241.607, 364.833, 394.623, 158.364, 18.948, -8.696],
+            [241.607, 364.833, 422.635, 158.364, 18.948, -8.696]
         ]
-tea_and_puf = [301.504, 345.833, 429.29, 158.369, 18.949, -8.714]
-
 puf =   [#關到底
-            [362.118+puf_cali[0], 366.628+puf_cali[1], 429.750, 158.368, 18.949, -8.713],
-            [362.118+puf_cali[0], 366.628+puf_cali[1], 392.067+puf_cali[2], 158.368, 18.949, -8.713],
-            [362.119+puf_cali[0], 187.153+puf_cali[1], 392.067+puf_cali[2], 158.369, 18.949, -8.714],
-            [362.119+puf_cali[0], 368.628+puf_cali[1], 392.067+puf_cali[2], 158.369, 18.949, -8.714],
-            [362.119+puf_cali[0], 368.628+puf_cali[1], 429.750, 158.369, 18.949, -8.714]
+            [362.118, 366.628, 429.750, 158.368, 18.949, -8.713],
+            [362.118, 366.628, 392.067, 158.368, 18.949, -8.713],
+            [362.119, 189.153, 392.067, 158.369, 18.949, -8.714],
+            [362.119, 367.628, 392.067, 158.369, 18.949, -8.714],
+            [362.119, 367.628, 429.750, 158.369, 18.949, -8.714]
         ]
-tea_and_egg = [195.504, 365.833, 429.29, 158.36, 18.949, -8.691]
 egg =   [
-            [150.546+egg_cali[0], 366.045+egg_cali[1], 421.444, 158.36, 18.949, -8.691],
-            [150.546+egg_cali[0], 366.045+egg_cali[1], 392.934+egg_cali[2], 158.36, 18.949, -8.691],
-            [150.700+egg_cali[0], 290.027+egg_cali[1], 392.297+egg_cali[2], 158.363, 18.947, -8.725],
-            [150.546+egg_cali[0], 367.045+egg_cali[1], 392.934+egg_cali[2], 158.36, 18.949, -8.691],
-            [150.546+egg_cali[0], 367.045+egg_cali[1], 421.444, 158.36, 18.949, -8.691],
+            [150.546, 366.045, 421.444, 158.36, 18.949, -8.691],
+            [150.546, 366.045, 392.934, 158.36, 18.949, -8.691],
+            [150.700, 290.027, 392.297, 158.363, 18.947, -8.725],
+            [150.546, 367.045, 392.934, 158.36, 18.949, -8.691],
+            [150.546, 367.045, 421.444, 158.36, 18.949, -8.691],
         ]
-finish  =   [
-                [45.504, 197.057, 390.29, -173.967, 25.277, 46.986],
-                [-151.832, 127.657, 436.803, -173.967, 25.277, 46.986],
-                [-219.982, 127.657, 436.803, -173.967, 25.277, 46.986],
-                [-219.982, 131.532, 350.178, -173.967, 25.277, 46.986],
-                [-15.62, 135.419, 350.178, -173.967, 25.277, 46.986], #x方向推
-                [-15.62, 224.577, 350.178, -173.967, 25.277, 46.986], #y方向推
-                # [-15.62, 204.74, 350.178, -173.967, 25.277, 46.986],
-            ]
 
 standby = [232.82, 260.402, 428.323, 158.364, 18.948, -8.696]
 
@@ -79,10 +46,10 @@ axis_calibration =  [
                         [0,0,0]
                     ]
 
-
-# DEFAULT_VELOCITY = 100
-# DEFAULT_ACCELERATION = 100
-
+DEFAULT_VELOCITY = 100
+DEFAULT_ACCELERATION = 100
+DEFAULT_VELOCITY = 50
+DEFAULT_ACCELERATION = 50
 WORK_BASE = 30
 WORK_TOOL = 10
 
@@ -258,11 +225,11 @@ class ExampleStrategy(Node):
             self.get_logger().info('GO_TEA')
             res = self.move_PTP(standby,False)
             res = self.move_PTP(tea[0])
-            new_tea = tea[0].copy()
+            new_tea = tea[0]
             while ac.next_go :
                 if ac.start_ac:
                     print("Tea cali")
-                    # print(new_tea)
+                    new_tea = tea[0].copy()
                     print("Present tea = "+str(new_tea))
                     new_tea[0] = tea[0][0]+ac.tea_x.get()
                     new_tea[1] = tea[0][1]+ac.tea_y.get()
@@ -271,32 +238,9 @@ class ExampleStrategy(Node):
                     print("New tea = "+str(new_tea))
                     res = self.move_LIN(new_tea)
                 else:
+                    new_tea = tea[0]
                     continue
-
-            ac.next_go = True
-            print(new_tea)
-            new_tea2 = new_tea.copy()
-            new_tea2[2] = tea[1][2]
-            res = self.move_LIN(new_tea2)
-            print(new_tea2)
-            new_tea3 = new_tea2.copy()
-            while ac.next_go :
-                if ac.start_ac:
-                    print("Tea cali")
-                    print("Present tea = "+str(new_tea2))
-                    new_tea3[0] = tea[1][0]+ac.tea_x.get()
-                    new_tea3[1] = tea[1][1]+ac.tea_y.get()
-                    new_tea3[2] = tea[1][2]+ac.tea_z.get()
-                    ac.start_ac = False
-                    print("New tea = "+str(new_tea3))
-                    res = self.move_LIN(new_tea3)
-                else:
-                    continue
-              
-            ac.next_go = True  
-            new_tea4 = new_tea3.copy()
-            new_tea4[2] = new_tea[2]
-            res = self.move_LIN(new_tea4)     
+            ac.next_go = True    
             if res.arm_state == RobotCommand.Response.IDLE:
                 nest_state = States.GO_PUFF
             else:
@@ -304,14 +248,13 @@ class ExampleStrategy(Node):
 
         elif state == States.GO_PUFF:
             self.get_logger().info('GO_PUFF')
-            # res = self.move_PTP(standby,False)
-            res = self.move_PTP(tea_and_puf,False)
+            res = self.move_PTP(standby,False)
             res = self.move_PTP(puf[0])
             new_puf = puf[0]
-            new_puf = puf[0].copy()
             while ac.next_go :
                 if ac.start_ac:
                     print("Puff cali")
+                    new_puf = puf[0].copy()
                     new_puf[0] = puf[0][0]+ac.puf_x.get()
                     new_puf[1] = puf[0][1]+ac.puf_y.get()
                     new_puf[2] = puf[0][2]+ac.puf_z.get()
@@ -319,32 +262,7 @@ class ExampleStrategy(Node):
                     res = self.move_LIN(new_puf)
                 else:
                     continue
-
-            
-            new_puf2 = new_puf.copy()
-            new_puf2[2] = puf[1][2]
-            res = self.move_LIN(new_puf2)
-
             ac.next_go = True
-            res = self.move_LIN(new_puf2)
-            new_puf3 = new_puf2.copy()
-            while ac.next_go :
-                if ac.start_ac:
-                    print("Puff cali")
-                    new_puf3[0] = puf[1][0]+ac.puf_x.get()
-                    new_puf3[1] = puf[1][1]+ac.puf_y.get()
-                    new_puf3[2] = puf[1][2]+ac.puf_z.get()
-                    ac.start_ac = False
-                    res = self.move_LIN(new_puf3)
-                else:
-                    continue
-            ac.next_go = True
-
-            new_puf4 = new_puf3.copy()
-            new_puf4[2] = new_puf[2]
-            res = self.move_LIN(new_puf4)
-
-            res = self.move_PTP(new_puf) 
             if res.arm_state == RobotCommand.Response.IDLE:
                 nest_state = States.GO_EGG
             else:
@@ -352,14 +270,13 @@ class ExampleStrategy(Node):
 
         elif state == States.GO_EGG:
             self.get_logger().info('GO_EGG')
-            # res = self.move_PTP(standby,False)
-            res = self.move_PTP(tea_and_puf,False)
-            res = self.move_PTP(tea_and_egg,False)
+            res = self.move_PTP(standby,False)
             res = self.move_PTP(egg[0])
-            new_egg = egg[0].copy()
+            new_egg = egg[0]
             while ac.next_go :
                 if ac.start_ac:
-                    print("EGG cali")
+                    new_egg = egg[0].copy()
+                    print("Puff cali")
                     new_egg[0] = egg[0][0]+ac.egg_x.get()
                     new_egg[1] = egg[0][1]+ac.egg_y.get()
                     new_egg[2] = egg[0][2]+ac.egg_z.get()
@@ -367,25 +284,7 @@ class ExampleStrategy(Node):
                     res = self.move_LIN(new_egg)
                 else:
                     continue
-            ac.next_go = True
-            new_egg2 = new_egg.copy()
-            new_egg2[2] = egg[1][2]
-            res = self.move_LIN(new_egg2)
-            new_egg3 = new_egg2.copy()
-            while ac.next_go :
-                if ac.start_ac:
-                    print("EGG cali")
-                    new_egg3[0] = egg[1][0]+ac.egg_x.get()
-                    new_egg3[1] = egg[1][1]+ac.egg_y.get()
-                    new_egg3[2] = egg[1][2]+ac.egg_z.get()
-                    ac.start_ac = False
-                    res = self.move_LIN(new_egg3)
-                else:
-                    continue
-            ac.next_go = True 
-            new_egg4 = new_egg3.copy()
-            new_egg4[2] = new_egg[2]
-            res = self.move_LIN(new_egg4)
+            ac.next_go = True    
             if res.arm_state == RobotCommand.Response.IDLE:
                 nest_state = States.GO_HOME
             else:
@@ -395,9 +294,9 @@ class ExampleStrategy(Node):
             self.get_logger().info('GO HOME')
             res = self.move_Angle(PHOTO_POSE)
             axis_calibration =  [   
-                                    [ac.tea_x.get()+tea_cali[0],ac.tea_y.get()+tea_cali[1],ac.tea_z.get()+tea_cali[2]],
-                                    [ac.puf_x.get()+puf_cali[0],ac.puf_y.get()+puf_cali[1],ac.puf_z.get()+puf_cali[2]],
-                                    [ac.egg_x.get()+egg_cali[0],ac.egg_y.get()+egg_cali[1],ac.egg_z.get()+egg_cali[2]]
+                                    [ac.tea_x.get(),ac.tea_y.get(),ac.tea_z.get()],
+                                    [ac.puf_x.get(),ac.puf_y.get(),ac.puf_z.get()],
+                                    [ac.egg_x.get(),ac.egg_y.get(),ac.egg_z.get()]
                                 ]
             axis_txt = open('src/competition/axis_calibration.txt','w+')
             for i in range(0,3):
