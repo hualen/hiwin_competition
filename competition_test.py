@@ -14,8 +14,8 @@ import copy
 
 from hiwin_interfaces.srv import RobotCommand
 # from YoloDetector import YoloDetectorActionClient
-DEFAULT_VELOCITY = 10
-DEFAULT_ACCELERATION = 10
+DEFAULT_VELOCITY = 20
+DEFAULT_ACCELERATION = 20
 
 '''
     read axis

@@ -19,9 +19,19 @@ next_go = True
     召喚視窗
 '''
 win = tk.Tk() # 如果使用直譯器的話，在這行Enter後就會先看到一個視窗了！
-win.title('座標調整') # 更改視窗的標題
+win.title('取料座標調整') # 更改視窗的標題
 win.geometry('1280x720+700+100') # 修改視窗大小(寬x高)
 win.resizable(False, False) # 如果不想讓使用者能調整視窗大小的話就均設為False
+
+# win2 = tk.Tk() # 如果使用直譯器的話，在這行Enter後就會先看到一個視窗了！
+# win2.title('開袋座標調整') # 更改視窗的標題
+# win2.geometry('1280x720+700+100') # 修改視窗大小(寬x高)
+# win2.resizable(False, False) # 如果不想讓使用者能調整視窗大小的話就均設為False
+
+# win3 = tk.Tk() # 如果使用直譯器的話，在這行Enter後就會先看到一個視窗了！
+# win3.title('收袋座標調整') # 更改視窗的標題
+# win3.geometry('1280x720+700+100') # 修改視窗大小(寬x高)
+# win3.resizable(False, False) # 如果不想讓使用者能調整視窗大小的話就均設為False
 
 '''
     召喚圖片
@@ -64,6 +74,27 @@ egg_y = tk.DoubleVar()
 egg_y.set(0.0)
 egg_z = tk.DoubleVar()
 egg_z.set(0.0)
+
+p1_x = tk.DoubleVar()
+p1_x.set(0.0)
+p1_y = tk.DoubleVar()
+p1_y.set(0.0)
+p1_z = tk.DoubleVar()
+p1_z.set(0.0)
+
+p2_x = tk.DoubleVar()
+p2_x.set(0.0)
+p2_y = tk.DoubleVar()
+p2_y.set(0.0)
+p2_z = tk.DoubleVar()
+p2_z.set(0.0)
+
+p3_x = tk.DoubleVar()
+p3_x.set(0.0)
+p3_y = tk.DoubleVar()
+p3_y.set(0.0)
+p3_z = tk.DoubleVar()
+p3_z.set(0.0)
 
 axis_calibration =  [   
                         [tea_x.get(),tea_y.get(),tea_z.get()],
@@ -244,7 +275,143 @@ def axis_cal():
     # finish.place(x=740,y=700,anchor=CENTER)
     win.mainloop()
 
+def bag_cal():
+    '''
+        tea
+    '''
+    p1 = tk.Label(win,text="Point 1",font=('Time New Roman',32))
+    p1.place(x=120,y=100,anchor=CENTER)
+
+    text_p1_x = tk.Label(win,text='X:',font=('Time New Roman',32))
+    text_p1_x.place(x=240,y=100,anchor=CENTER)
+
+    add_p1x = tk.Button(win,text="+",font=('Time New Roman',28),command=lambda:add(p1_x),width=1)
+    add_p1x.place(x=300,y=100,anchor=CENTER)
+
+    np1_x = tk.Label(win,textvariable=p1_x,bg = '#E0E0E0',font=('Time New Roman',28),padx= 10)
+    np1_x.place(x=400,y=100,anchor=CENTER)
+
+    sub_p1x = tk.Button(win,text="-",font=('Time New Roman',28),command=lambda:sub(p1_x),width=1)
+    sub_p1x.place(x=500,y=100,anchor=CENTER)
+
+    text_p1_y = tk.Label(win,text='Y:',font=('Time New Roman',32))
+    text_p1_y.place(x=580,y=100,anchor=CENTER)
+
+    add_p1y = tk.Button(win,text="+",font=('Time New Roman',28),command=lambda:add(p1_y),width=1)
+    add_p1y.place(x=640,y=100,anchor=CENTER)
+
+    np1_y = tk.Label(win,textvariable=p1_y,bg = '#E0E0E0',font=('Time New Roman',28),padx= 10)
+    np1_y.place(x=740,y=100,anchor=CENTER)
+
+    sub_p1y = tk.Button(win,text="-",font=('Time New Roman',28),command=lambda:sub(p1_y),width=1)
+    sub_p1y.place(x=840,y=100,anchor=CENTER)
+    
+    text_p1_z = tk.Label(win,text='Z:',font=('Time New Roman',32))
+    text_p1_z.place(x=920,y=100,anchor=CENTER)
+
+    add_p1z = tk.Button(win,text="+",font=('Time New Roman',28),command=lambda:add(p1_z),width=1)
+    add_p1z.place(x=980,y=100,anchor=CENTER)
+
+    np1_z = tk.Label(win,textvariable=p1_z,bg = '#E0E0E0',font=('Time New Roman',28),padx= 10)
+    np1_z.place(x=1080,y=100,anchor=CENTER)
+
+    sub_p1z = tk.Button(win,text="-",font=('Time New Roman',28),command=lambda:sub(p1_z),width=1)
+    sub_p1z.place(x=1180,y=100,anchor=CENTER)
+
+
+    '''
+        puff
+    '''
+    p2 = tk.Label(win,text="Point 2",font=('Time New Roman',32))
+    p2.place(x=120,y=300,anchor=CENTER)
+
+    text_p2_x = tk.Label(win,text='X:',font=('Time New Roman',32))
+    text_p2_x.place(x=240,y=300,anchor=CENTER)
+
+    add_p2x = tk.Button(win,text="+",font=('Time New Roman',28),command=lambda:add(p2_x),width=1)
+    add_p2x.place(x=300,y=300,anchor=CENTER)
+
+    np2_x = tk.Label(win,textvariable=p2_x,bg = '#E0E0E0',font=('Time New Roman',28),padx= 10)
+    np2_x.place(x=400,y=300,anchor=CENTER)
+
+    sub_p2x = tk.Button(win,text="-",font=('Time New Roman',28),command=lambda:sub(p2_x),width=1)
+    sub_p2x.place(x=500,y=300,anchor=CENTER)
+
+    text_p2_y = tk.Label(win,text='Y:',font=('Time New Roman',32))
+    text_p2_y.place(x=580,y=300,anchor=CENTER)
+
+    add_p2y = tk.Button(win,text="+",font=('Time New Roman',28),command=lambda:add(p2_y),width=1)
+    add_p2y.place(x=640,y=300,anchor=CENTER)
+
+    np2_y = tk.Label(win,textvariable=p2_y,bg = '#E0E0E0',font=('Time New Roman',28),padx= 10)
+    np2_y.place(x=740,y=300,anchor=CENTER)
+
+    sub_p2y = tk.Button(win,text="-",font=('Time New Roman',28),command=lambda:sub(p2_y),width=1)
+    sub_p2y.place(x=840,y=300,anchor=CENTER)
+    
+    text_p2_z = tk.Label(win,text='Z:',font=('Time New Roman',32))
+    text_p2_z.place(x=920,y=300,anchor=CENTER)
+
+    add_p2z = tk.Button(win,text="+",font=('Time New Roman',28),command=lambda:add(p2_z),width=1)
+    add_p2z.place(x=980,y=300,anchor=CENTER)
+
+    np2_z = tk.Label(win,textvariable=p2_z,bg = '#E0E0E0',font=('Time New Roman',28),padx= 10)
+    np2_z.place(x=1080,y=300,anchor=CENTER)
+
+    sub_p2z = tk.Button(win,text="-",font=('Time New Roman',28),command=lambda:sub(p2_z),width=1)
+    sub_p2z.place(x=1180,y=300,anchor=CENTER)
+
+    '''
+        egg
+    '''
+    p3 = tk.Label(win,text="Point 3",font=('Time New Roman',32))
+    p3.place(x=120,y=500,anchor=CENTER)
+
+    text_p3_x = tk.Label(win,text='X:',font=('Time New Roman',32))
+    text_p3_x.place(x=240,y=500,anchor=CENTER)
+
+    add_p3x = tk.Button(win,text="+",font=('Time New Roman',28),command=lambda:add(p3_x),width=1)
+    add_p3x.place(x=300,y=500,anchor=CENTER)
+
+    np3_x = tk.Label(win,textvariable=p3_x,bg = '#E0E0E0',font=('Time New Roman',28),padx= 10)
+    np3_x.place(x=400,y=500,anchor=CENTER)
+
+    sub_p3x = tk.Button(win,text="-",font=('Time New Roman',28),command=lambda:sub(p3_x),width=1)
+    sub_p3x.place(x=500,y=500,anchor=CENTER)
+
+    text_p3_y = tk.Label(win,text='Y:',font=('Time New Roman',32))
+    text_p3_y.place(x=580,y=500,anchor=CENTER)
+
+    add_p3y = tk.Button(win,text="+",font=('Time New Roman',28),command=lambda:add(p3_y),width=1)
+    add_p3y.place(x=640,y=500,anchor=CENTER)
+
+    np3_y = tk.Label(win,textvariable=p3_y,bg = '#E0E0E0',font=('Time New Roman',28),padx= 10)
+    np3_y.place(x=740,y=500,anchor=CENTER)
+
+    sub_p3y = tk.Button(win,text="-",font=('Time New Roman',28),command=lambda:sub(p3_y),width=1)
+    sub_p3y.place(x=840,y=500,anchor=CENTER)
+    
+    text_p3_z = tk.Label(win,text='Z:',font=('Time New Roman',32))
+    text_p3_z.place(x=920,y=500,anchor=CENTER)
+
+    add_p3z = tk.Button(win,text="+",font=('Time New Roman',28),command=lambda:add(p3_z),width=1)
+    add_p3z.place(x=980,y=500,anchor=CENTER)
+
+    np3_z = tk.Label(win,textvariable=p3_z,bg = '#E0E0E0',font=('Time New Roman',28),padx= 10)
+    np3_z.place(x=1080,y=500,anchor=CENTER)
+
+    sub_p3z = tk.Button(win,text="-",font=('Time New Roman',28),command=lambda:sub(p3_z),width=1)
+    sub_p3z.place(x=1180,y=500,anchor=CENTER)
+
+    next_state = tk.Button(win,text="NEXT",font=('Time New Roman',28),command=go_next,width=5)
+    next_state.place(x=640,y=620,anchor=CENTER)
+
+    # finish = tk.Button(win,text="NEXT",font=('Time New Roman',28),command=lambda:sub(),width=3)
+    # finish.place(x=740,y=700,anchor=CENTER)
+    win2.mainloop()    
+
 
     
 if __name__ == '__main__'  :
-    axis_cal()
+    # axis_cal()
+    bag_cal()
