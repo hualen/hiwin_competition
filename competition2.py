@@ -92,16 +92,6 @@ open_bag =  [
 
 # 收袋點位
 out_bag =   [
-                # [416.255, 200.401, 428.322, 158.363, 18.948, -8.696], # 至勾袋位置高點
-                # [416.255, 200.401, 280.634, 158.363, 18.948, -8.696], # 至勾袋位置低點
-                # [416.616, 280.918, 280.348, 158.362, 18.947, -8.696], # 前推至勾袋位置
-                # [416.616, 280.918, 382.847, 158.362, 18.947, -8.696], # 上台使鉤子碰到
-                # # [145.031, 221.175, 395.194, 158.363, 18.948, -8.696], # 袋口中繼點
-                # [138.279, 270.897, 453.266, -169.409, 20.632, 2.475], # 到原子筆口前
-                # [-69.019, 270.897, 453.266, -169.409, 20.632, 2.475], # 進入原子筆
-                # [-79.019, 270.897, 401.141, -169.409, 20.632, 2.475], # 下降一點
-                # [-79.019, 240.379, 401.141, -169.409, 20.632, 78.758],# y減躲避開鉤子
-                # [47.042, 275.482, 254.341, 153.697, 9.848, 68.690], # 旋轉下降離開袋子-169.409, 20.632, 78.758
                 [428.203, 215.629, 351.779, 158.361, 18.943, -8.706], # 至勾袋位置高點
                 [428.203, 215.629, 279.904, 158.361, 18.943, -8.706], # 至勾袋位置低點
                 [428.203, 282.391, 279.904, 158.361, 18.943, -8.706], # 前推至勾袋位置
@@ -114,11 +104,6 @@ out_bag =   [
                 [-96.189, 223.204, 391.56, 158.362, 18.952, 91.516],  # y減躲避開鉤子
                 [ 50.626, 232.553, 259.847, 102.523, 16.423, 79.234],
                 [ 70.626, 232.553, 259.847, 102.523, 16.423, 79.234],
-                # [-76.189, 223.204, 350.56, 158.362, 18.952, 91.516],  # 下降
-                # [-78.039, 257.591, 283.122, 157.566, -11.885, 91.465],# 旋轉更改治具角度
-                # [-78.039, 257.591, 283.122, 157.566, -11.885, 91.465],# 旋轉更改治具角度
-                # [  0.464, 257.591, 283.122, 157.566, -11.885, 91.465] # 離開袋子
-                
             ]
 standby_pass = [40.792, 153.685, 252.876, 158.365, 18.949, 1.696]
 standby = [232.82, 260.402, 428.323, 158.364, 18.948, -8.696]
@@ -155,7 +140,6 @@ finish  =   [
                 [-219.982, 131.532, 350.178, -173.967, 25.277, 46.986],
                 [-15.62, 135.419, 350.178, -173.967, 25.277, 46.986], #x方向推
                 [-15.62, 224.577, 350.178, -173.967, 25.277, 46.986], #y方向推
-                # [-15.62, 204.74, 350.178, -173.967, 25.277, 46.986],
             ]
 
 NUM_OBJECTS = 0
@@ -342,27 +326,27 @@ class ExampleStrategy(Node):
                 else:
                     pass
                 # 開袋子==================== 
-                res = self.move_PTP(open_bag[0],DEBUG_MODE)  # 
+                res = self.move_PTP(open_bag[0],DEBUG_MODE)      # 轉治具並下降
                 self.BStop()
-                res = self.move_PTP(open_bag[1],DEBUG_MODE)  # 
+                res = self.move_PTP(open_bag[1],DEBUG_MODE)      # 壓袋子
                 self.BStop()
-                res = self.slow_move_PTP(open_bag[2],DEBUG_MODE)  # 
+                res = self.slow_move_PTP(open_bag[2],DEBUG_MODE) # 壓袋子位置前推
                 self.BStop()
-                res = self.slow_move_PTP(open_bag[3],DEBUG_MODE)  # 
+                res = self.slow_move_PTP(open_bag[3],DEBUG_MODE) # 往上一點
                 self.BStop()
-                res = self.move_PTP(open_bag[4],DEBUG_MODE)   #  
+                res = self.move_PTP(open_bag[4],DEBUG_MODE)      # 碰到繩子洞口
                 self.BStop()
-                res = self.move_PTP(open_bag[5],DEBUG_MODE)  # 
+                res = self.move_PTP(open_bag[5],DEBUG_MODE)      # 抬高中繼點
                 self.BStop()
-                res = self.move_PTP(open_bag[6],DEBUG_MODE)  #
+                res = self.move_PTP(open_bag[6],DEBUG_MODE)      # 到原子筆口前
                 self.BStop()
-                res = self.move_PTP(open_bag[7],True)   # 
+                res = self.move_PTP(open_bag[7],True)            # 進原子筆
                 self.BStop()
-                res = self.move_PTP(open_bag[8],True)  #
+                res = self.move_PTP(open_bag[8],True)            # 下降一點
                 self.BStop()
-                res = self.move_PTP(open_bag[9],DEBUG_MODE)  #
+                res = self.move_PTP(open_bag[9],DEBUG_MODE)      # y減躲避開鉤子
                 self.BStop()
-                res = self.move_PTP(open_bag[10],DEBUG_MODE) #
+                res = self.move_PTP(open_bag[10],DEBUG_MODE)     # 下降離開袋子
                 self.BStop()
             
                 # 取物品=====================
@@ -383,7 +367,7 @@ class ExampleStrategy(Node):
                     res = self.move_LIN(tea[4],DEBUG_MODE)
                     res = self.move_LIN(tea[5],DEBUG_MODE)
                     tea_used = tea_used + forder[i][0]    
-                # res = self.move_PTP(standby,DEBUG_MODE)
+                
                 if forder[i][1] != 0:
                     if forder[i][0] != 0:
                         res = self.move_PTP(tea_and_puf,DEBUG_MODE)
@@ -396,7 +380,7 @@ class ExampleStrategy(Node):
                     res = self.move_LIN(puf[4],DEBUG_MODE)
                     
                     puf_used = puf_used + forder[i][0]
-                # res = self.move_PTP(standby,DEBUG_MODE)
+                
                 if forder[i][2] != 0:
                     if forder[i][1] != 0:
                         print("to tea and puf")
@@ -416,29 +400,29 @@ class ExampleStrategy(Node):
                 res = self.move_PTP(standby,DEBUG_MODE)
 
                 # 收袋=====================
-                res = self.move_PTP(out_bag[0],DEBUG_MODE) # 至勾袋位置高點
+                res = self.move_PTP(out_bag[0],DEBUG_MODE)  # 至勾袋位置高點
                 self.BStop()
-                res = self.move_PTP(out_bag[1],DEBUG_MODE) # 至勾袋位置低點
+                res = self.move_PTP(out_bag[1],DEBUG_MODE)  # 至勾袋位置低點
                 self.BStop()
-                res = self.move_LIN(out_bag[2],DEBUG_MODE) # 前推至勾袋位置
+                res = self.move_LIN(out_bag[2],DEBUG_MODE)  # 前推至勾袋位置
                 self.BStop()
-                res = self.move_LIN(out_bag[3],DEBUG_MODE) # 上抬使鉤子碰到
+                res = self.move_LIN(out_bag[3],DEBUG_MODE)  # 上抬使鉤子碰到
                 self.BStop()
-                res = self.move_PTP(out_bag[4],DEBUG_MODE) # 靠近螺絲口使繩子脫離
+                res = self.move_PTP(out_bag[4],DEBUG_MODE)  # 靠近螺絲口使繩子脫離
                 self.BStop()
-                res = self.move_PTP(out_bag[5],DEBUG_MODE) # 旋轉更改治具角度
+                res = self.move_PTP(out_bag[5],DEBUG_MODE)  # 旋轉更改治具角度
                 self.BStop()
-                res = self.move_PTP(out_bag[6])            # 移動到原子筆口
+                res = self.move_PTP(out_bag[6])             # 移動到原子筆口
                 self.BStop()
-                res = self.move_LIN(out_bag[7],DEBUG_MODE) # 進入原子筆
+                res = self.move_LIN(out_bag[7],DEBUG_MODE)  # 進入原子筆
                 self.BStop()
-                res = self.move_PTP(out_bag[8],DEBUG_MODE) # 往下一點
+                res = self.move_PTP(out_bag[8],DEBUG_MODE)  # 往下一點
                 self.BStop()
-                res = self.move_PTP(out_bag[9],DEBUG_MODE) # y減躲避開鉤子
+                res = self.move_PTP(out_bag[9],DEBUG_MODE)  # y減躲避開鉤子
                 self.BStop()
-                res = self.move_PTP(out_bag[10],DEBUG_MODE)      # 下降
+                res = self.move_PTP(out_bag[10],DEBUG_MODE) # 下降
                 self.BStop()
-                res = self.move_PTP(out_bag[11],DEBUG_MODE)      # 下降
+                res = self.move_PTP(out_bag[11],DEBUG_MODE) # 下降
                 self.BStop()
                  
                 # 出貨=====================
@@ -448,7 +432,6 @@ class ExampleStrategy(Node):
                 res = self.move_PTP(finish[3],DEBUG_MODE) # 
                 res = self.move_PTP(finish[4],DEBUG_MODE) # 
                 res = self.move_PTP(finish[5],DEBUG_MODE) #
-                # res = self.move_PTP(finish[6],True) #
             
             res = self.move_Angle(PHOTO_POSE)
             if res.arm_state == RobotCommand.Response.IDLE:
