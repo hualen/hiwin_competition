@@ -95,9 +95,9 @@ out_bag =   [
                
                 [428.203, 215.629, 351.779, 158.361, 18.943, -8.706], # 至勾袋位置高點
                 [428.203, 215.629, 279.904, 158.361, 18.943, -8.706], # 至勾袋位置低點
-                [428.203, 282.391, 279.904, 158.361, 18.943, -8.706], # 前推至勾袋位置
-                [428.203, 282.391, 322.621, 158.361, 18.943, -8.706], # 上台使鉤子碰到
-                [446.905, 291.338, 396.694, 158.363, 18.948, -8.696], # 靠近螺絲口使繩子脫離
+                [428.203, 287.391, 279.904, 158.361, 18.943, -8.706], # 前推至勾袋位置
+                [428.203, 287.391, 322.621, 158.361, 18.943, -8.706], # 上台使鉤子碰到
+                [446.905, 291.338, 416.694, 158.363, 18.948, -8.696], # 靠近螺絲口使繩子脫離
                 [170.016, 231.337, 454.359, 158.362, 18.948, 91.509], # 旋轉更改治具角度
                 [117.272, 300.636, 454.359, 158.362, 18.95, 91.51],   # 移動到原子筆口
                 [
@@ -126,7 +126,7 @@ tea_and_puf = [301.504, 335.833, 429.29, 158.369, 18.949, -8.714]
 puf =   [#關到底
             [362.118+puf_cali[0], 366.628+puf_cali[1], 429.750, 158.368, 18.949, -8.713],
             [362.118+puf_cali[0], 366.628+puf_cali[1], 392.067+puf_cali[2], 158.368, 18.949, -8.713],
-            [362.119+puf_cali[0], 182.153+puf_cali[1], 392.067+puf_cali[2], 158.369, 18.949, -8.714],
+            [362.119+puf_cali[0], 168.669+puf_cali[1], 392.067+puf_cali[2], 158.369, 18.949, -8.714],
             [362.119+puf_cali[0], 368.628+puf_cali[1], 392.067+puf_cali[2], 158.369, 18.949, -8.714],
             [362.119+puf_cali[0], 368.628+puf_cali[1], 429.750, 158.369, 18.949, -8.714]
         ]
@@ -187,6 +187,23 @@ class ExampleStrategy(Node):
         )
         res = self.call_hiwin(req)
         return res
+    
+    def exit_move_PTP(self,dis,hold = True,tool = BAG_TOOL,base = WORK_BASE):
+        pose = Twist()
+        [pose.linear.x, pose.linear.y, pose.linear.z] = dis[0:3]
+        [pose.angular.x, pose.angular.y, pose.angular.z] = dis[3:6]
+        req = self.generate_robot_request(
+            cmd_mode=RobotCommand.Request.PTP,
+            holding=hold,
+            tool=tool,
+            base=base,
+            pose=pose,
+            velocity=60,
+            acceleration=60
+        )
+        res = self.call_hiwin(req)
+        return res
+
 
     def slow_move_PTP(self,dis,hold = True,base = WORK_BASE,tool = BAG_TOOL):
         pose = Twist()
@@ -413,7 +430,7 @@ class ExampleStrategy(Node):
                 self.BStop()
                 res = self.move_LIN(out_bag[3],DEBUG_MODE) # 上抬使鉤子碰到
                 self.BStop()
-                res = self.move_PTP(out_bag[4],DEBUG_MODE) # 靠近螺絲口使繩子脫離
+                res = self.exit_move_PTP(out_bag[4],DEBUG_MODE) # 靠近螺絲口使繩子脫離
                 self.BStop()
                 res = self.move_PTP(out_bag[5],DEBUG_MODE) # 旋轉更改治具角度
                 self.BStop()
