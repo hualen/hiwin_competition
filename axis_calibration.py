@@ -105,7 +105,7 @@ axis_calibration =  [
 def add(item):
     global tea_x,tea_y,tea_z,puf_x,puf_y,puf_z,egg_x,egg_y,egg_z,start_ac
     # axis_txt = open('src/competition/photo/axis_calibration.txt','w+')
-    item.set(item.get()+1.0)
+    item.set(item.get()+0.5)
     start_ac = True
     # axis_calibration =  [   
     #                         [tea_x.get(),tea_y.get(),tea_z.get()],
@@ -121,7 +121,7 @@ def add(item):
     
 def sub(item):
     global tea_x,tea_y,tea_z,puf_x,puf_y,puf_z,egg_x,egg_y,egg_z,start_ac
-    item.set(item.get()-1.0)
+    item.set(item.get()-0.5)
     start_ac = True
     # axis_txt = open('src/competition/photo/axis_calibration.txt','w+')
     # item.set(item.get()-1.0)

@@ -65,6 +65,8 @@ egg =   [
             [147.546+egg_cali[0], 367.045+egg_cali[1], 421.444, 158.36, 18.949, -8.691],
         ]
 
+
+
 axis_calibration =  [   
                         [0,0,0],
                         [0,0,0],
@@ -247,48 +249,17 @@ class ExampleStrategy(Node):
             nest_state = States.GO_TEA
 
         elif state == States.GO_TEA:
-            self.get_logger().info('GO_TEA')
             res = self.move_PTP(standby,False)
             res = self.move_PTP(tea[0])
-            new_tea = tea[0].copy()
-            while ac.next_go :
-                if ac.start_ac:
-                    print("Tea cali")
-                    # print(new_tea)
-                    print("Present tea =tea[0] "+str(new_tea))
-                    new_tea[0] = tea[0][0]+ac.tea_x.get()
-                    new_tea[1] = tea[0][1]+ac.tea_y.get()
-                    new_tea[2] = tea[0][2]+ac.tea_z.get()
-                    ac.start_ac = False
-                    print("New tea = "+str(new_tea))
-                    res = self.move_LIN(new_tea)
-                else:
-                    continue
-
-            ac.next_go = True
-            print(new_tea)
-            new_tea2 = new_tea.copy()
-            new_tea2[2] = tea[1][2]
-            res = self.move_LIN(new_tea2)
-            print(new_tea2)
-            new_tea3 = new_tea2.copy()
-            while ac.next_go :
-                if ac.start_ac:
-                    print("Tea cali")
-                    print("Present tea = "+str(new_tea2))
-                    new_tea3[0] = tea[1][0]+ac.tea_x.get()
-                    new_tea3[1] = tea[1][1]+ac.tea_y.get()
-                    new_tea3[2] = tea[1][2]+ac.tea_z.get()
-                    ac.start_ac = False
-                    print("New tea = "+str(new_tea3))
-                    res = self.move_LIN(new_tea3)
-                else:
-                    continue
-              
-            ac.next_go = True  
-            new_tea4 = new_tea3.copy()
-            new_tea4[2] = new_tea[2]
-            res = self.move_LIN(new_tea4)     
+            res = self.move_LIN(tea[1],False)
+            for tea_num in range (0,9):
+                print("take tea",tea_num+1)
+                res = self.move_LIN(tea[2],False)
+                res = self.move_LIN(tea[3],False)
+                res = self.move_LIN(tea[4],False)
+            res = self.move_LIN(tea[4])    
+            res = self.move_LIN(tea[5])
+                 
             if res.arm_state == RobotCommand.Response.IDLE:
                 nest_state = States.GO_PUFF
             else:
@@ -296,47 +267,15 @@ class ExampleStrategy(Node):
 
         elif state == States.GO_PUFF:
             self.get_logger().info('GO_PUFF')
-            # res = self.move_PTP(standby,False)
             res = self.move_PTP(tea_and_puf,False)
             res = self.move_PTP(puf[0])
-            new_puf = puf[0]
-            new_puf = puf[0].copy()
-            while ac.next_go :
-                if ac.start_ac:
-                    print("Puff cali")
-                    new_puf[0] = puf[0][0]+ac.puf_x.get()
-                    new_puf[1] = puf[0][1]+ac.puf_y.get()
-                    new_puf[2] = puf[0][2]+ac.puf_z.get()
-                    ac.start_ac = False
-                    res = self.move_LIN(new_puf)
-                else:
-                    continue
-
+            res = self.move_LIN(puf[1],False)
+            for puf_num in range (0,9):
+                print("take puf",puf_num+1)
+                res = self.move_LIN(puf[2],False)
+                res = self.move_LIN(puf[3],False)
+            res = self.move_LIN(puf[4])
             
-            new_puf2 = new_puf.copy()
-            new_puf2[2] = puf[1][2]
-            res = self.move_LIN(new_puf2)
-
-            ac.next_go = True
-            res = self.move_LIN(new_puf2)
-            new_puf3 = new_puf2.copy()
-            while ac.next_go :
-                if ac.start_ac:
-                    print("Puff cali")
-                    new_puf3[0] = puf[1][0]+ac.puf_x.get()
-                    new_puf3[1] = puf[1][1]+ac.puf_y.get()
-                    new_puf3[2] = puf[1][2]+ac.puf_z.get()
-                    ac.start_ac = False
-                    res = self.move_LIN(new_puf3)
-                else:
-                    continue
-            ac.next_go = True
-
-            new_puf4 = new_puf3.copy()
-            new_puf4[2] = new_puf[2]
-            res = self.move_LIN(new_puf4)
-
-            res = self.move_PTP(new_puf) 
             if res.arm_state == RobotCommand.Response.IDLE:
                 nest_state = States.GO_EGG
             else:
@@ -344,40 +283,16 @@ class ExampleStrategy(Node):
 
         elif state == States.GO_EGG:
             self.get_logger().info('GO_EGG')
-            # res = self.move_PTP(standby,False)
             res = self.move_PTP(tea_and_puf,False)
-            res = self.move_PTP(tea_and_egg,False)
+            res = self.move_PTP(tea_and_egg,False)     
             res = self.move_PTP(egg[0])
-            new_egg = egg[0].copy()
-            while ac.next_go :
-                if ac.start_ac:
-                    print("EGG cali")
-                    new_egg[0] = egg[0][0]+ac.egg_x.get()
-                    new_egg[1] = egg[0][1]+ac.egg_y.get()
-                    new_egg[2] = egg[0][2]+ac.egg_z.get()
-                    ac.start_ac = False
-                    res = self.move_LIN(new_egg)
-                else:
-                    continue
-            ac.next_go = True
-            new_egg2 = new_egg.copy()
-            new_egg2[2] = egg[1][2]
-            res = self.move_LIN(new_egg2)
-            new_egg3 = new_egg2.copy()
-            while ac.next_go :
-                if ac.start_ac:
-                    print("EGG cali")
-                    new_egg3[0] = egg[1][0]+ac.egg_x.get()
-                    new_egg3[1] = egg[1][1]+ac.egg_y.get()
-                    new_egg3[2] = egg[1][2]+ac.egg_z.get()
-                    ac.start_ac = False
-                    res = self.move_LIN(new_egg3)
-                else:
-                    continue
-            ac.next_go = True 
-            new_egg4 = new_egg3.copy()
-            new_egg4[2] = new_egg[2]
-            res = self.move_LIN(new_egg4)
+            res = self.move_LIN(egg[1],True)
+            for egg_num in range (0,9):
+                print("take egg",egg_num+1)
+                res = self.move_LIN(egg[1],False)
+                res = self.move_LIN(egg[2],False)
+                res = self.move_LIN(egg[3],False) 
+            res = self.move_LIN(egg[4])
             if res.arm_state == RobotCommand.Response.IDLE:
                 nest_state = States.GO_HOME
             else:
@@ -385,20 +300,8 @@ class ExampleStrategy(Node):
 
         elif state == States.GO_HOME:
             self.get_logger().info('GO HOME')
-            res = self.move_Angle(PHOTO_POSE)
-            axis_calibration =  [   
-                                    [ac.tea_x.get()+tea_cali[0],ac.tea_y.get()+tea_cali[1],ac.tea_z.get()+tea_cali[2]],
-                                    [ac.puf_x.get()+puf_cali[0],ac.puf_y.get()+puf_cali[1],ac.puf_z.get()+puf_cali[2]],
-                                    [ac.egg_x.get()+egg_cali[0],ac.egg_y.get()+egg_cali[1],ac.egg_z.get()+egg_cali[2]]
-                                ]
-            axis_txt = open('src/competition/axis_calibration.txt','w+')
-            for i in range(0,3):
-                for j in range(0,3):
-                    axis_txt.write(str(axis_calibration[i][j])+' ')
-                axis_txt.write('\n')
-            axis_txt.close()
-            ac.win.destroy()     
-            
+            res = self.move_PTP(standby,False)
+            res = self.move_Angle(PHOTO_POSE)        
             if res.arm_state == RobotCommand.Response.IDLE:
                 nest_state = States.CLOSE_ROBOT
             else:
@@ -508,21 +411,15 @@ class ExampleStrategy(Node):
         self.main_loop_thread = Thread(target=self._main_loop)
         self.main_loop_thread.daemon = True
         self.main_loop_thread.start()
-       
-def axis_calib():
+    
+
+def main(args=None):
+
     rclpy.init()
     stratery = ExampleStrategy()
     stratery.start_main_loop_thread()
     rclpy.spin(stratery)
     rclpy.shutdown()
-
-def main(args=None):
-
-    # 建立一個子執行緒
-    gui = threading.Thread(target = axis_calib)
-    # 執行該子執行緒
-    gui.start()
-    ac.axis_cal()
 
 
 if __name__ == "__main__":
